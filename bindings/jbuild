@@ -1,0 +1,17 @@
+(rule
+ ((targets (gtk+-3.0-ccopt.sexp
+            gtk+-3.0-cclib.sexp
+            gtk+-3.0-ccopt
+            gtk+-3.0-cclib))
+  (deps    (config/discover.exe))
+  (action  (run ${<} -ocamlc ${OCAMLC}))))
+
+(library
+ ((name gtk3_bindings)
+  (public_name gtk3.bindings)
+  (flags (:standard -safe-string))
+  (libraries (ctypes.stubs ctypes ctypes.foreign.threaded))
+  (virtual_deps (conf-gtk3))
+  (preprocess (pps (ppx_jane)))))
+
+(jbuild_version 1)

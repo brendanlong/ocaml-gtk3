@@ -1,0 +1,11 @@
+(jbuild_version 1)
+
+(executables
+ ((names
+   (example
+    ))
+  (flags (:standard -safe-string))
+  (libraries
+   (gtk3
+    ))
+  (preprocess (pps (ppx_jane)))))

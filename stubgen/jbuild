@@ -1,0 +1,25 @@
+(executables
+ ((names (ffi_stubgen ffi_types_stubgen))
+  (flags (:standard -safe-string))
+  (libraries (gtk3_bindings
+              ctypes.stubs
+              ctypes))
+  (preprocess (pps (ppx_jane)))))
+
+(rule
+ ((targets (ffi_ml_types_stubgen.c))
+  (deps (./ffi_types_stubgen.exe))
+  (action (bash "./${<} > ${@}"))))
+
+(rule
+ ((targets (ffi_ml_types_stubgen.exe))
+  (deps    (./ffi_ml_types_stubgen.c
+            ../bindings/gtk+-3.0-ccopt
+            ../bindings/gtk+-3.0-cclib))
+  (action (bash "\
+${CC} ${<} $(< ../bindings/gtk+-3.0-ccopt) $(< ../bindings/gtk+-3.0-cclib) \
+  -I `dirname ${findlib:ctypes:ctypes_cstubs_internals.h}` \
+  -I ${ocaml_where} -o ${@}")
+   )))
+
+(jbuild_version 1)
